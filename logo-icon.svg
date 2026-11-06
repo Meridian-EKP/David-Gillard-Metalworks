@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Metalworks logo">
+  <rect width="160" height="160" rx="28" fill="#120f0d"/>
+  <g transform="translate(20 20) scale(1.875)" fill="#ff9a3c">
+    <path d="M4 19 L14 17 H54 V26 H42 C41 31 36 33 35 37 V45 H45 V52 H17 V45 H27 V37 C26 33 21 31 20 26 H14 C9 26 5 23 4 19 Z"/>
+  </g>
+</svg>
