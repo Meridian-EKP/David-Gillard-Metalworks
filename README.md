@@ -13,9 +13,8 @@ logo-icon.svg (logo + favicon)  robots.txt
 Preview locally: `python3 -m http.server 8000`, then open http://localhost:8000
 
 ## Before launch
-- Replace placeholder phone `01234 567 890` and email `hello@dagmetals.co.uk` (search `tel:` / `mailto:` in index.html).
 - Shop: product names, descriptions and prices (`£00.00`) are placeholders. The Buy now buttons are UI only (`.buy` in index.html).
 - Contact form only shows a thank-you message; it needs a real handler (email service or form backend).
 - Add `og:image`, canonical URL and a sitemap once the domain is final.
 - Confirm David is happy for the Yell photos to be used.
-- Reviews button links to David's Google search result; swap for his Google Business "write a review" link when he has one.
+- Reviews button links to David's Google reviews. WhatsApp link uses his mobile (447833087439).
