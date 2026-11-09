@@ -23,16 +23,13 @@ const more=document.getElementById('more');let f='all',open=false;
 const apply=()=>{let n=0,t=0;sh.forEach(b=>{const m=f==='all'||b.dataset.cat===f;if(m)t++;b.hidden=!m||(!open&&++n>4)});more.hidden=t<=4;more.textContent=open?'Show fewer photos':'See more photos ('+(t-4)+' more)'};
 more.onclick=()=>{open=!open;apply();if(!open)document.getElementById('work').scrollIntoView({behavior:'smooth'})};
 document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));f=c.dataset.f;apply()});apply()})();
-// forge sparks
-(()=>{const c=document.getElementById('sparks'),x=c.getContext('2d');let W,H,P=[];
-const rs=()=>{W=c.width=c.offsetWidth;H=c.height=c.offsetHeight};rs();addEventListener('resize',rs);
-const mk=()=>({x:Math.random()*W,y:H+10,vx:(Math.random()-.5)*.6,vy:-(.6+Math.random()*1.6),r:.6+Math.random()*1.8,l:0,m:200+Math.random()*250});
-for(let i=0;i<(innerWidth<760?30:70);i++){const p=mk();p.y=Math.random()*H;P.push(p)}
-if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-(function f(){x.clearRect(0,0,W,H);for(const p of P){p.l++;p.x+=p.vx+Math.sin(p.l/25)*.3;p.y+=p.vy;const a=1-p.l/p.m;
-if(a<=0||p.y<-10){Object.assign(p,mk());continue}
-x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fillStyle=`rgba(255,${130+a*90|0},40,${a})`;x.shadowBlur=10;x.shadowColor='#ff7a1a';x.fill()}
-requestAnimationFrame(f)})()})();
+// forge sparks: plain CSS-animated elements (sized in CSS px, so nothing can be stretched or sped up)
+(()=>{const box=document.getElementById('sparks');if(!box||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+const n=innerWidth<760?26:55,r=(a,b)=>a+Math.random()*(b-a);
+for(let k=0;k<n;k++){const e=document.createElement('i');
+  e.style.cssText=`--x:${r(0,100).toFixed(1)}%;--s:${r(2,5).toFixed(1)}px;--d:${r(5,11).toFixed(1)}s;--l:-${r(0,11).toFixed(1)}s;--dx:${r(-40,40).toFixed(0)}px`;
+  box.appendChild(e)}
+new IntersectionObserver(e=>box.classList.toggle('off',!e[0].isIntersecting)).observe(box)})();
 
 // product gallery + quantity (UI only)
 (()=>{const g=document.getElementById('gmain');if(!g)return;const alts=JSON.parse(g.dataset.alts),img=document.getElementById('gimg'),cnt=document.getElementById('gcount'),pts=[...document.querySelectorAll('.pt')];let i=0;
