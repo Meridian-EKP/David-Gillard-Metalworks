@@ -5,7 +5,7 @@ Stripe takes the card payments for the folding machine. There is no monthly fee,
 The website never handles card details: the "Buy now" button just sends the customer to Stripe's secure page.
 
 ## Part 1: David creates his account (about 15 minutes, he must do this himself)
-1. Go to stripe.com/gb and click **Start now**. Use Dave@dagmetals.co.uk and a new password.
+1. Go to stripe.com/gb and click **Start now**. Use dagmetals8@gmail.com and a new password.
 2. Confirm the email Stripe sends.
 3. Stripe asks for business details: sole trader is fine. It will ask for his name, date of birth, home address, and bank account (to be paid into) and some ID. Have a bank card or statement and photo ID to hand.
 4. Wait for Stripe to say payments are active.
