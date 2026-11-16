@@ -246,3 +246,7 @@ footer .logo{justify-content:center;margin-bottom:12px;color:var(--text)}
 .pdp+.pdp{margin-top:56px;padding-top:48px;border-top:1px solid var(--line)}
 .pdp+.proof{margin-top:48px}
 .proof+.pdp{margin-top:56px;padding-top:48px;border-top:1px solid var(--line)}
+.pmore-t{display:inline-flex;align-items:center;gap:6px;margin:14px 0 4px;padding:6px 0;background:none;border:0;border-bottom:1px solid var(--ember2);color:var(--ember2);font:600 .92rem var(--body);cursor:pointer}
+.pmore-t::after{content:"+";font-size:1.1em}
+.pmore-t[aria-expanded="true"]::after{content:"\2212"}
+.pmore[hidden]{display:none}

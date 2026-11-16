@@ -48,3 +48,12 @@ let x=0;p.addEventListener('touchstart',e=>x=e.touches[0].clientX,{passive:true}
 // Buy now: each product's button opens its own Stripe Payment Link (data-stripe). Nothing else on the site touches Stripe.
 document.querySelectorAll('.buy').forEach(b=>{const m=b.closest('.pinfo').querySelector('.buymsg');
 b.onclick=()=>{const u=(b.dataset.stripe||'').trim();if(/^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\//.test(u))location.href=u;else m.hidden=false}});
+
+// Shop: collapse the specs / notes / question button behind "See more details"
+document.querySelectorAll('.pinfo').forEach(P=>{const sp=P.querySelector('.specs');if(!sp)return;
+const items=[sp];let n=sp.nextElementSibling;while(n){items.push(n);n=n.nextElementSibling}
+const w=document.createElement('div');w.className='pmore';w.id='pm-'+Math.random().toString(36).slice(2,7);w.hidden=true;
+sp.before(w);items.forEach(e=>w.appendChild(e));
+const b=document.createElement('button');b.type='button';b.className='pmore-t';b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls',w.id);b.textContent='See more details';
+w.before(b);
+b.onclick=()=>{const o=w.hidden;w.hidden=!o;b.setAttribute('aria-expanded',o);b.textContent=o?'See fewer details':'See more details'}});
