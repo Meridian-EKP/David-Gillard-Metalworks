@@ -23,38 +23,20 @@ const more=document.getElementById('more');let f='all',open=false;
 const apply=()=>{let n=0,t=0;sh.forEach(b=>{const m=f==='all'||b.dataset.cat===f;if(m)t++;b.hidden=!m||(!open&&++n>4)});more.hidden=t<=4;more.textContent=open?'Show fewer photos':'See more photos ('+(t-4)+' more)'};
 more.onclick=()=>{open=!open;apply();if(!open)document.getElementById('work').scrollIntoView({behavior:'smooth'})};
 document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));f=c.dataset.f;apply()});apply()})();
-// forge sparks
-// The canvas buffer is always sized from its real on-screen size (ResizeObserver, device-pixel aware),
-// and motion is time-based, so embers can't render oversized or run fast if layout was unsettled at load.
-(()=>{const c=document.getElementById('sparks'),x=c&&c.getContext('2d');if(!x)return;
-if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-let W=0,H=0,P=[],raf=0,last=0,vis=true;
-const count=()=>innerWidth<760?30:70;
-const mk=(init)=>({x:Math.random()*W,y:init?Math.random()*H:H+10,vx:(Math.random()-.5)*.6*60,vy:-(.6+Math.random()*1.6)*60,r:.6+Math.random()*1.8,age:0,life:(200+Math.random()*250)/60});
-const size=()=>{const r=c.getBoundingClientRect(),w=Math.round(r.width),h=Math.round(r.height);if(w<2||h<2)return false;
-  const d=Math.min(window.devicePixelRatio||1,2);
-  if(w!==W||h!==H||c.width!==Math.round(w*d)){W=w;H=h;c.width=Math.round(w*d);c.height=Math.round(h*d);x.setTransform(d,0,0,d,0,0);P=Array.from({length:count()},()=>mk(true))}
-  return true};
-const step=ts=>{raf=0;if(!vis||document.hidden)return;
-  if(!size()){raf=requestAnimationFrame(step);return}
-  const dt=Math.min((ts-last)/1000||0.016,0.05);last=ts;
-  x.clearRect(0,0,W,H);x.shadowBlur=10;x.shadowColor='#ff7a1a';
-  for(const p of P){p.age+=dt;p.x+=p.vx*dt+Math.sin(p.age*60/25)*.3*60*dt;p.y+=p.vy*dt;const a=1-p.age/p.life;
-    if(a<=0||p.y<-10){Object.assign(p,mk(false));continue}
-    x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fillStyle=`rgba(255,${130+a*90|0},40,${a})`;x.fill()}
-  raf=requestAnimationFrame(step)};
-const start=()=>{if(!raf&&vis&&!document.hidden){last=performance.now();raf=requestAnimationFrame(step)}};
-new ResizeObserver(()=>{size();start()}).observe(c);
-new IntersectionObserver(e=>{vis=e[0].isIntersecting;start()}).observe(c);
-document.addEventListener('visibilitychange',start);
-start()})();
+// forge sparks: plain CSS-animated elements (sized in CSS px, so nothing can be stretched or sped up)
+(()=>{const box=document.getElementById('sparks');if(!box||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+const n=innerWidth<760?26:55,r=(a,b)=>a+Math.random()*(b-a);
+for(let k=0;k<n;k++){const e=document.createElement('i');
+  e.style.cssText=`--x:${r(0,100).toFixed(1)}%;--s:${r(2,5).toFixed(1)}px;--d:${r(5,11).toFixed(1)}s;--l:-${r(0,11).toFixed(1)}s;--dx:${r(-40,40).toFixed(0)}px`;
+  box.appendChild(e)}
+new IntersectionObserver(e=>box.classList.toggle('off',!e[0].isIntersecting)).observe(box)})();
 
 // product gallery + quantity (UI only)
-(()=>{const g=document.getElementById('gmain');if(!g)return;const alts=JSON.parse(g.dataset.alts),img=document.getElementById('gimg'),cnt=document.getElementById('gcount'),pts=[...document.querySelectorAll('.pt')];let i=0;
+document.querySelectorAll('.pdp').forEach(P=>{const g=P.querySelector('.gmain');if(!g)return;const alts=JSON.parse(g.dataset.alts),img=g.querySelector('.gimg'),cnt=g.querySelector('.gcount'),pts=[...P.querySelectorAll('.pt')];let i=0;
 const go=n=>{i=(n+alts.length)%alts.length;img.src=pts[i].querySelector('img').src;img.alt=alts[i];cnt.textContent=(i+1)+' / '+alts.length;pts.forEach((p,k)=>p.classList.toggle('on',k===i));pts[i].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})};
 pts.forEach((p,k)=>p.onclick=()=>go(k));g.querySelector('.g-p').onclick=()=>go(i-1);g.querySelector('.g-nx').onclick=()=>go(i+1);
 let x=0;g.addEventListener('touchstart',e=>x=e.touches[0].clientX,{passive:true});g.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-x;if(Math.abs(d)>40)go(i+(d<0?1:-1))});
-})();
+});
 
 // reviews carousel
 (()=>{const p=document.getElementById('proof');if(!p)return;const t=p.querySelector('.ptrack'),n=t.children.length,d=document.getElementById('pdots');let i=0;
@@ -63,6 +45,15 @@ const go=k=>{i=(k+n)%n;t.style.transform='translateX(-'+i*100+'%)';[...d.childre
 document.getElementById('pprev').onclick=()=>go(i-1);document.getElementById('pnext').onclick=()=>go(i+1);
 let x=0;p.addEventListener('touchstart',e=>x=e.touches[0].clientX,{passive:true});p.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x;if(Math.abs(dx)>40)go(i+(dx<0?1:-1))});go(0)})();
 
-// Buy now: opens David's Stripe Payment Link (data-stripe on #buy). Nothing else on the site touches Stripe.
-(()=>{const b=document.getElementById('buy');if(!b)return;const m=document.getElementById('buymsg');
-b.onclick=()=>{const u=(b.dataset.stripe||'').trim();if(/^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\//.test(u))location.href=u;else m.hidden=false}})();
+// Buy now: each product's button opens its own Stripe Payment Link (data-stripe). Nothing else on the site touches Stripe.
+document.querySelectorAll('.buy').forEach(b=>{const m=b.closest('.pinfo').querySelector('.buymsg');
+b.onclick=()=>{const u=(b.dataset.stripe||'').trim();if(/^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\//.test(u))location.href=u;else m.hidden=false}});
+
+// Shop: collapse the specs / notes / question button behind "See more details"
+document.querySelectorAll('.pinfo').forEach(P=>{const sp=P.querySelector('.specs');if(!sp)return;
+const items=[sp];let n=sp.nextElementSibling;while(n){items.push(n);n=n.nextElementSibling}
+const w=document.createElement('div');w.className='pmore';w.id='pm-'+Math.random().toString(36).slice(2,7);w.hidden=true;
+sp.before(w);items.forEach(e=>w.appendChild(e));
+const b=document.createElement('button');b.type='button';b.className='pmore-t';b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls',w.id);b.textContent='See more details';
+w.before(b);
+b.onclick=()=>{const o=w.hidden;w.hidden=!o;b.setAttribute('aria-expanded',o);b.textContent=o?'See fewer details':'See more details'}});
