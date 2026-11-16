@@ -13,7 +13,7 @@ logo-icon.svg (logo + favicon)  robots.txt
 Preview locally: `python3 -m http.server 8000`, then open http://localhost:8000
 
 ## Before launch
-- Shop: one product (Metal Folding Hand Machine 600mm, £133, from David's eBay listing). Buy now is UI only (`.buy` in index.html): wire to a checkout link. Confirm multi-buy prices, £9.95 courier / free collection and the eBay feedback quotes with David.
+- Shop: three products: 600mm £133, 800mm single-vice £185 and 800mm bolt-to-bench £185 (from David's eBay listings; 800mm: £14.95 courier). Each has its own `.buy` button with an empty `data-stripe` in index.html: paste that product's Stripe Payment Link there. Confirm multi-buy prices, £9.95 courier / free collection and the eBay feedback quotes with David.
 - Contact form only shows a thank-you message; it needs a real handler (email service or form backend).
 - Add `og:image`, canonical URL and a sitemap once the domain is final.
 - Confirm David is happy for the Yell photos to be used.

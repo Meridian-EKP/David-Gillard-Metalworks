@@ -32,11 +32,11 @@ for(let k=0;k<n;k++){const e=document.createElement('i');
 new IntersectionObserver(e=>box.classList.toggle('off',!e[0].isIntersecting)).observe(box)})();
 
 // product gallery + quantity (UI only)
-(()=>{const g=document.getElementById('gmain');if(!g)return;const alts=JSON.parse(g.dataset.alts),img=document.getElementById('gimg'),cnt=document.getElementById('gcount'),pts=[...document.querySelectorAll('.pt')];let i=0;
+document.querySelectorAll('.pdp').forEach(P=>{const g=P.querySelector('.gmain');if(!g)return;const alts=JSON.parse(g.dataset.alts),img=g.querySelector('.gimg'),cnt=g.querySelector('.gcount'),pts=[...P.querySelectorAll('.pt')];let i=0;
 const go=n=>{i=(n+alts.length)%alts.length;img.src=pts[i].querySelector('img').src;img.alt=alts[i];cnt.textContent=(i+1)+' / '+alts.length;pts.forEach((p,k)=>p.classList.toggle('on',k===i));pts[i].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})};
 pts.forEach((p,k)=>p.onclick=()=>go(k));g.querySelector('.g-p').onclick=()=>go(i-1);g.querySelector('.g-nx').onclick=()=>go(i+1);
 let x=0;g.addEventListener('touchstart',e=>x=e.touches[0].clientX,{passive:true});g.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-x;if(Math.abs(d)>40)go(i+(d<0?1:-1))});
-})();
+});
 
 // reviews carousel
 (()=>{const p=document.getElementById('proof');if(!p)return;const t=p.querySelector('.ptrack'),n=t.children.length,d=document.getElementById('pdots');let i=0;
@@ -45,6 +45,6 @@ const go=k=>{i=(k+n)%n;t.style.transform='translateX(-'+i*100+'%)';[...d.childre
 document.getElementById('pprev').onclick=()=>go(i-1);document.getElementById('pnext').onclick=()=>go(i+1);
 let x=0;p.addEventListener('touchstart',e=>x=e.touches[0].clientX,{passive:true});p.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x;if(Math.abs(dx)>40)go(i+(dx<0?1:-1))});go(0)})();
 
-// Buy now: opens David's Stripe Payment Link (data-stripe on #buy). Nothing else on the site touches Stripe.
-(()=>{const b=document.getElementById('buy');if(!b)return;const m=document.getElementById('buymsg');
-b.onclick=()=>{const u=(b.dataset.stripe||'').trim();if(/^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\//.test(u))location.href=u;else m.hidden=false}})();
+// Buy now: each product's button opens its own Stripe Payment Link (data-stripe). Nothing else on the site touches Stripe.
+document.querySelectorAll('.buy').forEach(b=>{const m=b.closest('.pinfo').querySelector('.buymsg');
+b.onclick=()=>{const u=(b.dataset.stripe||'').trim();if(/^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\//.test(u))location.href=u;else m.hidden=false}});

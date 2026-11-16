@@ -13,6 +13,8 @@ The website never handles card details: the "Buy now" button just sends the cust
 ## Part 2: create the "Buy now" link (about 5 minutes; Ed can do this on a call)
 1. In Stripe go to **Payment links** and click **New**.
 2. **Product:** "Metal Folding Hand Machine 600mm", price **£133**, one time. Add the first photo.
+   *The site now sells two machines, so you need a second Payment Link too: "Metal Folding Hand Machine 800mm", **£185**, courier shipping **£14.95** (collection £0). Repeat all the steps for it and send the links, saying which is which.*
+   *There is also a third: "Metal Folding Hand Machine 800mm, Bolt to Bench", **£185**, courier **£14.95**. That makes three Payment Links in total.*
 3. Turn on **Let customers adjust quantity**.
 4. Turn on **Collect customers' addresses** (shipping).
 5. Add **shipping options**: "Courier, 3 to 5 days" £9.95, and "Collect from Littlehampton" £0 (optional).
